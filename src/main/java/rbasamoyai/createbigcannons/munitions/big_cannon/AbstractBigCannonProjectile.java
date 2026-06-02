@@ -38,6 +38,7 @@ import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.CannonDamageSource;
 import rbasamoyai.createbigcannons.munitions.ImpactExplosion;
 import rbasamoyai.createbigcannons.munitions.ProjectileContext;
+import rbasamoyai.createbigcannons.munitions.ProjectileDamageHooks;
 import rbasamoyai.createbigcannons.munitions.big_cannon.config.BigCannonProjectilePropertiesComponent;
 import rbasamoyai.createbigcannons.munitions.config.components.BallisticPropertiesComponent;
 import rbasamoyai.createbigcannons.network.ClientboundPlayBlockHitEffectPacket;
@@ -157,7 +158,7 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 
 		BallisticPropertiesComponent ballistics = this.getBallisticProperties();
 		BlockArmorPropertiesProvider blockArmor = BlockArmorPropertiesHandler.getProperties(state);
-		boolean unbreakable = projectileContext.griefState() == CBCCfgMunitions.GriefState.NO_DAMAGE || state.getDestroySpeed(this.level(), pos) == -1;
+		boolean unbreakable = projectileContext.griefState() == CBCCfgMunitions.GriefState.NO_DAMAGE || state.getDestroySpeed(this.level(), pos) == -1 || !ProjectileDamageHooks.canDamageTerrain(this.level(),pos);
 
 		Vec3 accel = this.getForces(this.position(), this.getDeltaMovement());
 		Vec3 curVel = this.getDeltaMovement().add(accel);

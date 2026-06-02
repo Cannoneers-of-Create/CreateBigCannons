@@ -24,6 +24,10 @@ public interface CustomExplosion {
 	default void editBlock(Level level, BlockPos pos, BlockState blockState, FluidState fluidState, float power) {
 	}
 
+    void setCanDamageTerrain(boolean canDamageTerrain);
+
+    boolean canDamageTerrain();
+
     float getEntityRadius();
 
 	void sendExplosionToClient(ServerPlayer player);
@@ -37,10 +41,11 @@ public interface CustomExplosion {
 		protected final float blockSize;
         protected final float entitySize;
 		protected final BlockInteraction interaction;
+        protected boolean canDamageTerrain = true;
 
 		public Impl(Level level, @Nullable Entity source, @Nullable DamageSource damageSource,
 					@Nullable ExplosionDamageCalculator calculator, double toBlowX, double toBlowY, double toBlowZ, float blockRadius,
-					float entityRadius, boolean fire, Explosion.BlockInteraction interaction) {
+					float entityRadius, boolean fire, BlockInteraction interaction) {
 			super(level, source, damageSource, calculator, toBlowX, toBlowY, toBlowZ, blockRadius, fire, interaction,
                 ParticleTypes.EXPLOSION, ParticleTypes.EXPLOSION_EMITTER, SoundEvents.GENERIC_EXPLODE); // These last three arguments are unused.
 			this.level = level;
@@ -62,6 +67,16 @@ public interface CustomExplosion {
             this.entitySize = packet.entityPower();
 			this.interaction = BlockInteraction.DESTROY;
 		}
+
+        @Override
+        public void setCanDamageTerrain(boolean canDamageTerrain) {
+            this.canDamageTerrain = canDamageTerrain;
+        }
+
+        @Override
+        public boolean canDamageTerrain() {
+            return this.canDamageTerrain;
+        }
 
 		@Override
 		public void finalizeExplosion(boolean spawnParticles) {
