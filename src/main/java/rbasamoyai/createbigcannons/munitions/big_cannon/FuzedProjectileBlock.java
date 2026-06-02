@@ -226,8 +226,10 @@ public abstract class FuzedProjectileBlock<BLOCK_ENTITY extends FuzedBlockEntity
     @Override
     public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
         ItemStack item = super.getCloneItemStack(level, pos, state);
-        if (level.getBlockEntity(pos) instanceof FuzedBlockEntity be)
-            item.set(CBCDataComponents.FUZE, be.components().getOrDefault(CBCDataComponents.FUZE, ItemContainerContents.EMPTY));
+        if (level.getBlockEntity(pos) instanceof FuzedBlockEntity be) {
+            ItemStack fuze = be.getFuze();
+            item.set(CBCDataComponents.FUZE, fuze.isEmpty() ? ItemContainerContents.EMPTY : ItemContainerContents.fromItems(List.of(fuze)));
+        }
         return item;
     }
 

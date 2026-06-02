@@ -211,8 +211,10 @@ public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile
     @Override
     public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
         ItemStack item = super.getCloneItemStack(level, pos, state);
-        if (level.getBlockEntity(pos) instanceof BigCannonProjectileBlockEntity be)
-            item.set(CBCDataComponents.TRACER, be.components().getOrDefault(CBCDataComponents.TRACER, ItemContainerContents.EMPTY));
+        if (level.getBlockEntity(pos) instanceof BigCannonProjectileBlockEntity be) {
+            ItemStack tracer = be.getTracer();
+            item.set(CBCDataComponents.TRACER, tracer.isEmpty() ? ItemContainerContents.EMPTY : ItemContainerContents.fromItems(List.of(tracer)));
+        }
         return item;
     }
 

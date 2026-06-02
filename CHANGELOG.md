@@ -9,6 +9,8 @@ Changes:
 
 Fixed:
 - Fixed Sable shell impact detonation crash courtesy of devprinter
+- Fixed cloned big cannon projectile items not being compatible with schematic printing
+  - Still incompatible with block entity data, not supported. Do a simple middle click, not ctrl+click
 
 ## [5.11.5] - 2026-05-31
 
