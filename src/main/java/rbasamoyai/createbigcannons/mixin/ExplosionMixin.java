@@ -33,7 +33,7 @@ public class ExplosionMixin {
 	private Optional<Float> createbigcannons$explode$editBlock(ExplosionDamageCalculator instance, Explosion explosion, BlockGetter reader,
                                                                BlockPos pos, BlockState state, FluidState fluid, Operation<Optional<Float>> original,
                                                                @Local(ordinal = 0) float power) {
-		if (this instanceof CustomExplosion customExplosion)
+		if (this instanceof CustomExplosion customExplosion && customExplosion.canDamageTerrain())
 			customExplosion.editBlock(this.level, pos, state, fluid, power);
         return original.call(instance, explosion, reader, pos, state, fluid);
     }

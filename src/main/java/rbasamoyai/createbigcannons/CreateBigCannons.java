@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons;
 
+import net.minecraft.core.BlockPos;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -29,6 +31,7 @@ import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
 import rbasamoyai.createbigcannons.index.CBCRecipeTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
+import rbasamoyai.createbigcannons.munitions.ProjectileDamageHooks;
 import rbasamoyai.createbigcannons.network.CBCRootNetwork;
 import rbasamoyai.createbigcannons.remix.CustomExplosion;
 import rbasamoyai.createbigcannons.utils.CBCUtils;
@@ -81,7 +84,16 @@ public class CreateBigCannons {
 	public static <T extends Explosion & CustomExplosion> void handleCustomExplosion(Level level, T explosion) {
 		if (IndexPlatform.onExplosionStart(level, explosion))
 			return;
+
+        boolean canDamageTerrain = ProjectileDamageHooks.canDamageTerrain(level, BlockPos.containing(explosion.center()));
+        explosion.setCanDamageTerrain(canDamageTerrain);
+
 		explosion.explode();
+
+        if (!canDamageTerrain){
+            explosion.clearToBlow();
+        }
+
 		explosion.finalizeExplosion(level.isClientSide);
 		if (!(level instanceof ServerLevel slevel))
 			return;

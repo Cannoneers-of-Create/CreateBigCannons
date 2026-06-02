@@ -26,6 +26,7 @@ import rbasamoyai.createbigcannons.config.CBCCfgMunitions;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCDamageTypes;
 import rbasamoyai.createbigcannons.munitions.CannonDamageSource;
+import rbasamoyai.createbigcannons.munitions.ProjectileDamageHooks;
 import rbasamoyai.createbigcannons.munitions.config.components.BallisticPropertiesComponent;
 import rbasamoyai.createbigcannons.munitions.config.components.EntityDamagePropertiesComponent;
 import rbasamoyai.createbigcannons.munitions.fragment_burst.CBCProjectileBurst;
@@ -82,7 +83,9 @@ public class ShrapnelBurst extends CBCProjectileBurst {
                 }
             }
 			BlockPos pos1 = pos.immutable();
-			CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos1, (float) Math.min(curPom, toughness), state, this.level(), PartialBlockDamageManager::voidBlock);
+            if (ProjectileDamageHooks.canDamageTerrain(this.level(),pos1)){
+                CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos1, (float) Math.min(curPom, toughness), state, this.level(), PartialBlockDamageManager::voidBlock);
+            }
 		}
 		if (this.level() instanceof ServerLevel slevel) {
 			ParticleOptions options = new BlockParticleOption(ParticleTypes.BLOCK, state);
