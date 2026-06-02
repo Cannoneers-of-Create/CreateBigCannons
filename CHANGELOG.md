@@ -2,7 +2,10 @@
 
 ## [5.11.6] - Unreleased
 
-**Create Big Cannons 5.11.6 fixes more critical issues.**
+**Create Big Cannons 5.11.6 fixes more critical issues for the 1.21.1 release.**
+
+Changes:
+- [Development] Added block damage hook courtesy of devprinter
 
 Fixed:
 - Fixed Sable shell impact detonation crash courtesy of devprinter
