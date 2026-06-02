@@ -4,6 +4,9 @@
 
 **Create Big Cannons 5.11.6 fixes more critical issues.**
 
+Fixed:
+- Fixed Sable shell impact detonation crash courtesy of devprinter
+
 ## [5.11.5] - 2026-05-31
 
 **Create Big Cannons 5.11.5 fixes a critical issue introduced in v5.11.4 that breaks big cannon munitions.**
