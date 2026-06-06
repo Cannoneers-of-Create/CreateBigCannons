@@ -8,9 +8,10 @@ Changes:
 - [Development] Added block damage hook courtesy of devprinter
 
 Fixed:
-- Fixed Sable shell impact detonation crash courtesy of devprinter
 - Fixed cloned big cannon projectile items not being compatible with schematic printing
   - Still incompatible with block entity data, not supported. Do a simple middle click, not ctrl+click
+- [Sable] Fixed shell impact detonation crash courtesy of devprinter
+- [CBC: Advanced Technologies] Fixed (probably) creative mode tab crash
 
 ## [5.11.5] - 2026-05-31
 
