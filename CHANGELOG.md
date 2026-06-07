@@ -1,6 +1,6 @@
 # Changelog
 
-## [5.11.6] - Unreleased
+## [5.11.6] - 2026-06-06
 
 **Create Big Cannons 5.11.6 fixes more critical issues for the 1.21.1 release.**
 
