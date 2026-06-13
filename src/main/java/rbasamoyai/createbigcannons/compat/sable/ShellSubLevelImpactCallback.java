@@ -1,7 +1,5 @@
 package rbasamoyai.createbigcannons.compat.sable;
 
-import net.minecraft.server.TickTask;
-
 import org.joml.Vector3d;
 
 import dev.ryanhcode.sable.api.physics.callback.BlockSubLevelCollisionCallback;
@@ -9,6 +7,7 @@ import dev.ryanhcode.sable.companion.math.JOMLConversion;
 import dev.ryanhcode.sable.sublevel.system.SubLevelPhysicsSystem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.TickTask;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,7 +25,7 @@ public class ShellSubLevelImpactCallback implements BlockSubLevelCollisionCallba
     private ShellSubLevelImpactCallback() {}
 
     @Override
-    public CollisionResult sable$onCollision(BlockPos blockPos, Vector3d hitPos, double impactVelocity) {
+    public CollisionResult sable$onCollision(BlockPos blockPos, BlockPos otherHitPos, Vector3d hitPos, double impactVelocity) {
         if (!CBCConfigs.server().compat.sableFuzedProjectilesCanExplodeAsPhysicsObject.get())
             return CollisionResult.NONE;
         double triggerVelocity = 4.0f;

@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.11.7] - Unreleased
+
+**Create Big Cannons 5.11.6 brings more fixes, as well as support for Sable 2.0.0.**
+
+Fixed:
+- [Sable] Fixed shell impact compat NoSuchMethodError crash
+
 ## [5.11.6] - 2026-06-06
 
 **Create Big Cannons 5.11.6 fixes more critical issues for the 1.21.1 release.**
