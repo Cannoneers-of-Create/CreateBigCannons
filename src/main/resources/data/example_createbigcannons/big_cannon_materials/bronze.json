@@ -1,0 +1,12 @@
+{
+  "minimum_velocity_per_barrel": 1.332,
+  "weight": 2.0,
+  "max_safe_propellant_stress": 4,
+  "failure_mode": "rupture",
+  "connects_in_survival": false,
+  "is_weldable": true,
+  "weld_damage": 1,
+  "weld_stress_penalty": 0,
+  "minimum_spread": 0.03,
+  "spread_reduction_per_barrel": 1.4
+}

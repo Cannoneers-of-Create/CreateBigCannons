@@ -4,6 +4,9 @@
 
 **Create Big Cannons 5.11.7 brings more fixes, as well as support for Sable 2.0.0.**
 
+Added:
+- [Datapacks] Added example JSON files of big cannon and autocannon materials in the built-in `example_createbigcannons` folder
+
 Fixed:
 - Fixed unfuzed and non-tracer projectile block items not being consumable by schematic printer
 - [Sable] Fixed shell impact compat NoSuchMethodError crash

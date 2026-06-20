@@ -1,0 +1,15 @@
+{
+  "maximum_barrel_length": 5,
+  "weight": 1,
+  "base_spread": 2.5,
+  "spread_reduction_per_barrel": 2.0,
+  "base_speed": 3,
+  "speed_increase_per_barrel": 1.5,
+  "max_speed_increases": 3,
+  "projectile_lifetime": 25,
+  "base_recoil": 2,
+  "connects_in_survival": false,
+  "is_weldable": true,
+  "weld_damage": 1,
+  "weld_stress_penalty": 0
+}
