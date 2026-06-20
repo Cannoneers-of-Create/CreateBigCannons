@@ -13,7 +13,7 @@ import rbasamoyai.createbigcannons.index.CBCDataComponents;
 public class ProjectileBlockItem extends BlockItem {
 
 	public ProjectileBlockItem(Block block, Properties properties) {
-		super(block, properties);
+		super(block, properties.component(CBCDataComponents.TRACER, ItemContainerContents.EMPTY));
 	}
 
 	@Override

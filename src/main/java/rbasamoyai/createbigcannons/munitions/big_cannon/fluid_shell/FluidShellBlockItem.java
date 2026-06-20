@@ -29,7 +29,7 @@ import rbasamoyai.createbigcannons.munitions.FuzedProjectileBlockItem;
 public class FluidShellBlockItem extends FuzedProjectileBlockItem {
 
 	public FluidShellBlockItem(Block block, Properties properties) {
-		super(block, properties);
+		super(block, properties.component(CBCDataComponents.FLUID_CONTENT, CustomData.EMPTY));
 	}
 
 	@Override

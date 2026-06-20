@@ -19,7 +19,7 @@ import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
 public class FuzedProjectileBlockItem extends ProjectileBlockItem {
 
 	public FuzedProjectileBlockItem(Block block, Properties properties) {
-		super(block, properties);
+		super(block, properties.component(CBCDataComponents.FUZE, ItemContainerContents.EMPTY));
 	}
 
 	@Override

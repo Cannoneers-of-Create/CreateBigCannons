@@ -2,9 +2,10 @@
 
 ## [5.11.7] - Unreleased
 
-**Create Big Cannons 5.11.6 brings more fixes, as well as support for Sable 2.0.0.**
+**Create Big Cannons 5.11.7 brings more fixes, as well as support for Sable 2.0.0.**
 
 Fixed:
+- Fixed unfuzed and non-tracer projectile block items not being consumable by schematic printer
 - [Sable] Fixed shell impact compat NoSuchMethodError crash
 
 ## [5.11.6] - 2026-06-06
