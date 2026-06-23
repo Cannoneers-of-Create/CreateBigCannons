@@ -1,6 +1,6 @@
 # Changelog
 
-## [5.11.7] - Unreleased
+## [5.11.7] - 2026-06-22
 
 **Create Big Cannons 5.11.7 brings more fixes, as well as support for Sable 2.0.0.**
 
