@@ -33,6 +33,7 @@
     "compat.create.BeltMovementHandlerMixin",
     "compat.create.ChassisBlockEntityMixin",
     "compat.create.ContraptionColliderMixin",
+    "compat.create.ContinuousSeparationManifoldMixin",
     "compat.create.ContraptionMixin",
     "compat.create.FilterItemMixin",
     "compat.create.GantryContraptionMixin",
