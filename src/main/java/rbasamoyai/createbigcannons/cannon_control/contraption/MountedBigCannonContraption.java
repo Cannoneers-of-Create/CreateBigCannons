@@ -484,7 +484,12 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		Vec3 plumePos = CBCCompatTransformers.transformVec3(level, spawnPos.subtract(vec), this.entity.position());
 		propelCtx.smokeScale = Math.max(1, propelCtx.smokeScale);
 
-		BigCannonPlumeParticleData plumeParticle = new BigCannonPlumeParticleData(propelCtx.smokeScale, propelCtx.chargesUsed, 10);
+        float plumeScale = CBCConfigs.server().munitions.smokePlumeSizeMultiplier.getF();
+        BigCannonPlumeParticleData plumeParticle = new BigCannonPlumeParticleData(
+            propelCtx.smokeScale * plumeScale,
+            propelCtx.chargesUsed,
+            10
+        );
 		CannonBlastWaveEffectParticleData blastEffect = new CannonBlastWaveEffectParticleData(shakeDistance,
 			CBCRegistryUtils.getSoundEventRegistry().wrapAsHolder(CBCSoundEvents.FIRE_BIG_CANNON.getMainEvent()), SoundSource.BLOCKS,
 			volume, pitch, 2, propelCtx.chargesUsed);
@@ -712,8 +717,9 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 
 		Vec3 plumePos = CBCCompatTransformers.transformVec3(slevel, spawnPos.add(vec), this.entity.position());
         Vec3 plumeDir = CBCCompatTransformers.transformLocationNormal(slevel, this.entity.blockPosition(), vec);
-		for (ServerPlayer player : slevel.players()) {
-			slevel.sendParticles(player, new DropMortarPlumeParticleData(1f), true, plumePos.x, plumePos.y, plumePos.z, 0, plumeDir.x, plumeDir.y, plumeDir.z, 1.0f);
+        float plumeScale = CBCConfigs.server().munitions.dropMortarSmokePlumeSizeMultiplier.getF();
+        for (ServerPlayer player : slevel.players()) {
+            slevel.sendParticles(player, new DropMortarPlumeParticleData(plumeScale), true, plumePos.x, plumePos.y, plumePos.z, 0, plumeDir.x, plumeDir.y, plumeDir.z, 1.0f);
 		}
 		CBCSoundEvents.FIRE_DROP_MORTAR.playOnServer(slevel, BlockPos.containing(spawnPos), 4, slevel.getRandom().nextFloat() * 0.05f + 0.97f);
 		this.hasFired = true;

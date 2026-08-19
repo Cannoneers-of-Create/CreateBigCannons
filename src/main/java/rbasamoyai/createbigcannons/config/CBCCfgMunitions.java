@@ -12,6 +12,8 @@ public class CBCCfgMunitions extends ConfigBase {
 	public final ConfigFloat baseProjectileFluidBounceChance = f(0.9f, 0, 1, "baseProjectileFluidBounceChance");
 	public final ConfigFloat minVelocityForPenetrationBonus = f(1, 0, "minimumVelocityForPenetrationBonus", "[in Meters per Tick]", Comments.minVelocityForPenetrationBonus);
 	public final ConfigFloat penetrationBonusScale = f(0.1f, 0, "penetrationBonusScale");
+    public final ConfigFloat smokePlumeSizeMultiplier = f(1, 0.1f, 20, "smokePlumeSizeMultiplier", Comments.smokePlumeSizeMultiplier);
+    public final ConfigFloat dropMortarSmokePlumeSizeMultiplier = f(1, 0.1f, 20, "dropMortarSmokePlumeSizeMultiplier", Comments.dropMortarSmokePlumeSizeMultiplier);
 
 	public final ConfigEnum<GriefState> damageRestriction = e(GriefState.ALL_DAMAGE, "damageRestriction", Comments.damageRestriction);
 	public final ConfigBool projectilesChangeSurroundings = b(true, "projectilesChangeSurroundings");
@@ -53,7 +55,6 @@ public class CBCCfgMunitions extends ConfigBase {
 	public final ConfigInt ammoContainerMachineGunRoundCapacity = i(128, 1, 128, "autocannonAmmoContainerMachineGunRoundCapacity", Comments.ammoContainerMachineGunRoundCapacity);
     public final ConfigFloat autocannonProjectileImpactForceMultiplier = f(0.1f, 0, "autocannonProjectileImpactForceMultiplier", Comments.autocannonProjectileImpactForceMultiplier);
     public final ConfigFloat machineGunProjectileImpactForceMultiplier = f(0.01f, 0, "machineGunProjectileImpactForceMultiplier", Comments.machineGunProjectileImpactForceMultiplier);
-
 	@Override
 	public String getName() {
 		return "munitions";
@@ -89,7 +90,9 @@ public class CBCCfgMunitions extends ConfigBase {
         static String bigCannonProjectileImpactForceMultiplier = "The strength multiplier of big cannon projectile impacts on physics objects (i.e. from Sable, Valkyrien Skies).";
         static String autocannonProjectileImpactForceMultiplier = "The strength multiplier of autocannon projectile impacts (excluding machine gun rounds) on physics objects (i.e. from Sable, Valkyrien Skies).";
         static String machineGunProjectileImpactForceMultiplier = "The strength multiplier of machine gun projectile impacts on physics objects (i.e. from Sable, Valkyrien Skies).";
-	}
+	    static String smokePlumeSizeMultiplier = "Multiplier applied to the smoke plume that is generated when a cannon is shot, useful if you are using custom strength values for your cannons.";
+        static String dropMortarSmokePlumeSizeMultiplier = "Multiplier applied to the smoke plume that is generated when a drop mortar is shot.";
+    }
 
 	public enum GriefState {
 		ALL_DAMAGE(Explosion.BlockInteraction.DESTROY_WITH_DECAY),
