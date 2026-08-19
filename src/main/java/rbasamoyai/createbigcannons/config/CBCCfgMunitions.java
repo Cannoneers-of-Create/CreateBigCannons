@@ -90,8 +90,8 @@ public class CBCCfgMunitions extends ConfigBase {
         static String bigCannonProjectileImpactForceMultiplier = "The strength multiplier of big cannon projectile impacts on physics objects (i.e. from Sable, Valkyrien Skies).";
         static String autocannonProjectileImpactForceMultiplier = "The strength multiplier of autocannon projectile impacts (excluding machine gun rounds) on physics objects (i.e. from Sable, Valkyrien Skies).";
         static String machineGunProjectileImpactForceMultiplier = "The strength multiplier of machine gun projectile impacts on physics objects (i.e. from Sable, Valkyrien Skies).";
-	    static String smokePlumeSizeMultiplier = "Multiplier applied to the smoke plume that is generated when a cannon is shot, useful if you are using custom strength values for your cannons.";
-        static String dropMortarSmokePlumeSizeMultiplier = "Multiplier applied to the smoke plume that is generated when a drop mortar is shot.";
+	    static String smokePlumeSizeMultiplier = "Multiplier applied to the smoke plume that is generated when a cannon is fired, useful if you are using custom strength values for your cannons.";
+        static String dropMortarSmokePlumeSizeMultiplier = "Multiplier applied to the smoke plume that is generated when a drop mortar is fired.";
     }
 
 	public enum GriefState {
