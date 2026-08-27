@@ -25,8 +25,12 @@ public class EntitySubLevelUtilMixin {
     @WrapOperation(method = "kickEntity", at = @At(value = "INVOKE", target = "Lorg/joml/Vector3d;mul(D)Lorg/joml/Vector3d;"))
     private static Vector3d createbigcannons$kickEntity$mul(Vector3d instance, double scalar, Operation<Vector3d> original,
                                                             @Local(argsOnly = true) Entity entity) {
-        if (entity instanceof AbstractCannonProjectile && CBCConfigs.server().compat.sableProjectilesInheritPhysicsObjectVelocity.get())
-            Sable.HELPER.getVelocity(entity.level(), JOMLConversion.toJOML(entity.position()), instance);
+        if (entity instanceof AbstractCannonProjectile && CBCConfigs.server().compat.sableProjectilesInheritPhysicsObjectVelocity.get()) {
+            Vector3d joml = JOMLConversion.toJOML(entity.position());
+            if (Sable.HELPER.isInPlotGrid(entity.level(), joml)) {
+                Sable.HELPER.getVelocity(entity.level(), joml, instance);
+            }
+        }
         return original.call(instance, scalar);
     }
 
