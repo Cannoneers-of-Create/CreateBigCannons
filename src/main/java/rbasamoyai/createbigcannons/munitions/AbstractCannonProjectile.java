@@ -19,6 +19,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -100,6 +101,8 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 			this.discard();
 			return;
 		}
+		if (this.level() instanceof ServerLevel slevel && !this.isInGround() && this.isWaitingForChunksOnPath(slevel))
+			return;
 		ChunkPos cpos = new ChunkPos(this.blockPosition());
 		if (this.level().isClientSide || this.level().hasChunk(cpos.x, cpos.z)) {
 			super.tick();
@@ -181,6 +184,56 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
                 }
 			}
 		}
+	}
+
+	/**
+	 * {@link #clipAndDamage()} raycasts this tick's whole path, and reading a block in a chunk that is not loaded makes
+	 * the server thread load, or generate, that chunk on the spot. The chunks around the projectile are normally loaded
+	 * already; a projectile fast enough to reach past them waits here instead, as it already does for its own chunk,
+	 * until the chunks on its path have been loaded off the server thread.
+	 *
+	 * @return true if a chunk on this tick's path is not loaded yet
+	 */
+	protected boolean isWaitingForChunksOnPath(ServerLevel slevel) {
+		Vec3 start = this.position();
+		Vec3 vel = this.nextVelocity == null ? this.getDeltaMovement() : this.nextVelocity;
+		Vec3 end = start.add(vel).add(this.getForces(start, vel));
+		// Outside the build height the raycast reads void air without touching any chunk
+		if (Math.max(start.y, end.y) < slevel.getMinBuildHeight() || Math.min(start.y, end.y) >= slevel.getMaxBuildHeight())
+			return false;
+		boolean chunkload = CBCConfigs.server().munitions.projectilesCanChunkload.get();
+		boolean waiting = false;
+		double dx = end.x - start.x;
+		double dz = end.z - start.z;
+		int minX = Mth.floor(Math.min(start.x, end.x)) >> 4;
+		int maxX = Mth.floor(Math.max(start.x, end.x)) >> 4;
+		for (int x = minX; x <= maxX; ++x) {
+			// The part of the path inside this column of chunks
+			double t0 = 0;
+			double t1 = 1;
+			if (dx != 0) {
+				double ta = (x * 16 - start.x) / dx;
+				double tb = (x * 16 + 16 - start.x) / dx;
+				t0 = Math.max(t0, Math.min(ta, tb));
+				t1 = Math.min(t1, Math.max(ta, tb));
+			}
+			double z0 = start.z + dz * t0;
+			double z1 = start.z + dz * t1;
+			int maxZ = Mth.floor(Math.max(z0, z1)) >> 4;
+			for (int z = Mth.floor(Math.min(z0, z1)) >> 4; z <= maxZ; ++z) {
+				if (slevel.getChunkSource().getChunkNow(x, z) != null)
+					continue;
+				waiting = true;
+				if (chunkload)
+					RitchiesProjectileLib.queueForceLoad(slevel, x, z);
+			}
+		}
+		if (waiting && chunkload) {
+			// Keep the projectile's own chunk loaded while it waits
+			ChunkPos cpos = new ChunkPos(this.blockPosition());
+			RitchiesProjectileLib.queueForceLoad(slevel, cpos.x, cpos.z);
+		}
+		return waiting;
 	}
 
 	protected void onTickRotate() {}
