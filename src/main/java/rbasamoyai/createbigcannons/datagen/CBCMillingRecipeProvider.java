@@ -17,7 +17,7 @@ public class CBCMillingRecipeProvider extends MillingRecipeGen {
 
 	GeneratedRecipe
 
-		NITROPOWDER = create(CreateBigCannons.resource("nitropowder"), b -> b.require(CBCItems.HARDENED_NITRO.get())
+		NITROPOWDER = create(CreateBigCannons.resource("nitropowder"), b -> b.duration(100).require(CBCItems.HARDENED_NITRO.get())
 		.output(CBCItems.NITROPOWDER.get(), 2));
 
 }
